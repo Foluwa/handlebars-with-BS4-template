@@ -1,0 +1,20 @@
+{
+  "name": "rcf_uniosun",
+  "version": "1.0.0",
+  "description": "REDEEMED CHRISTAIN FELLOWSHIP OSOGBO CAMPUS OFFICIAL WEBSITE",
+  "main": "app.js",
+  "scripts": {
+    "test": "start nodemon"
+  },
+  "author": "AKINTOLA MORONFOLUWA EMMANUEL",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.5.0"
+  }
+}
