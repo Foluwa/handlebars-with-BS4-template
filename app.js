@@ -1,60 +1,59 @@
 // FileName: index.js
 // Import express
-let express = require('express');
-let flash = require('connect-flash');
-var session = require('express-session')
-var cookieParser = require('cookie-parser')
-var exphbs = require('express-handlebars');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var keys = require('./keys.js');
-var bodyParser = require('body-parser');
-var validator = require('express-validator');
+const express = require('express');
+const flash = require('connect-flash');
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
+const expressHbs = require('express-handlebars');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const validator = require('express-validator');
+const path = require('path');
+// Setup server port
+const port = process.env.PORT || 3000;
 
-var indexRouter = require('./routes/index');
+let app = express();
 
-let path = require('path');
+let keys = require('./keys.js');
+let indexRouter = require('./routes/index');
+
 
 // Initialize the app
-var bodyParser = require('body-parser')
 var sess = {
-  secret: 'keyboard cat',
+  secret: 'keyboardcat',
   resave: false,
   saveUninitialized: false,
   cookie: {}
 }
 
 
-let app = express();
 
-mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongodb.dbURI, { useNewUrlParser: true }).then(//useNewUrlParser: true,
-  function(res){
-   console.log("Connected to Database Successfully.");
-  }
-).catch(function(err){
-  console.log("Connection to Database failed.");
-  console.log(err);
-});
+//DATABASE CONNECTION
+// mongoose.Promise = global.Promise;
+// mongoose.connect(keys.mongodb.dbURI, { useMongoClient: true }).then(//useNewUrlParser: true,
+//   function(res){
+//    console.log("Connected to Database Successfully.");
+//   }
+// ).catch(function(err){
+//   console.log("Connection to Database failed.");
+//   console.log(err);
+// });
 require('./config/passport');
 
-app.use(bodyParser.urlencoded({ extended: false }))
 
+app.engine('.hbs', expressHbs({ defaultLayout: 'layout', extname: '.hbs' }));
+app.set('view engine', '.hbs');
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(validator());
 app.use(session(sess))
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-app.engine('.hbs', exphbs({ defaultLayout: 'layout', extname: '.hbs' }));
-//app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', '.hbs');
-
-
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(function(req, res, next){
 	res.locals.login = req.isAuthenticated();
 	res.locals.session = req.session;
@@ -64,12 +63,14 @@ app.use(function(req, res, next){
 app.use('/', indexRouter);
 
 
-
-// Setup server port
-var port = process.env.PORT || 3000;
-
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // Launch app to listen to specified port
 app.listen(port, function () {
-     console.log("NACOSS webiste running on " + port);
+     console.log("Navigate your browser to localhost: " + port);
 });

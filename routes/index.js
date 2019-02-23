@@ -6,7 +6,7 @@ var User = require('../models/user');
 var LocalStrategy = require('passport-local').Strategy;
 
 router.get('/', function(req, res, next){
-	res.render('index', {title : 'HOME | NACOSS'});
+	res.render('main/index', {title : 'Template | HandleBars'});
 });
 
 var csrfProtection = csrf();
